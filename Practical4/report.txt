@@ -1,0 +1,85 @@
+ALGORITHMS - PRACTICAL 4: PRIM'S ALGORITHM
+
+By:
+- Javier Fernández Rozas	j.frozas
+- Pelayo Vieites Pérez		pelayo.vieites.perez
+
+Date: 02 Dec 2021
+Group: 6.1
+
+
+Characteristics of the machine:
+	- CPU: Intel Core i7-1165G7 @ 2.80GHz
+	- RAM: 16GB
+	- O.S: Ubuntu 21.04
+	- Kernel: Linux 5.11.0-34-generic (x86_64)
+Compiler: gcc (Ubuntu 10.3.0-1ubuntu1) 10.3.0
+
+
+This practical is about the implementation, and the evaluation of the complexity of Prim's algorithm, used
+ to find the minimum spanning tree from a weighted graph. In this case, the graph is represented in an
+ adjancency matrix, so that the position x,y represents the weight of the edge that joins vertices x and y.
+
+After implementing the algorithm in C language, we check its correct functioning with several given
+ adjacency matrices. This test can be checked after compiling with the order "make", executing "./test".
+ 
+Finally, we checked the algorithms with random matrices, which had a size of n, being n part of a 
+ geometrical progresion of the form 25*2^i, up to i=5 (n=800). With this, we determined its execution
+ times and analyzed them.
+
+To measure the execution time of both algorithms, the program measures the system time (in microseconds)
+ before and after the execution of the algorithm. The execution time is defined as the difference of
+ both amounts. In this practical all the execution times are measured in microseconds
+
+If the execution time is of less than 500 microseconds, it is considered unprecised. To solve this issue,
+ in the event that happens, the program includes another procedure to measure the time in a proper and
+ precise way: repeat the algorithm 1000 times and compute the average time per iteration. This is:
+ ((final time) - (initial time))/1000. After so, the amount of time dedicated to the initialization of
+ the random arrays must be substracted from it as well, so a new measurement of execution time (the one
+ corresponding to initializing the arrays) is performed. In the cases that this is performed, it is
+ highlighted in the tables with (*).
+ 
+Thus, the definitive execution time for an algorithm is:
+    - The difference between initial and final time, if this is larger than 500 microseconds.
+    - If that difference is less than 500 microseconds:
+        * The difference between initial and final time of 1000 executions / 1000 (discounting
+        the time dedicated to the initialization of the random arrays)
+
+* * * * Analysis of the execution times
+
+Number of nodes             t(n)    t(n)/n^2.00    t(n)/n^2.10    t(n)/n^2.20
+          25(*)         6.437000       0.010299       0.007465       0.005410
+          50(*)        21.937000       0.008775       0.005934       0.004013
+         100(*)        82.126000       0.008213       0.005182       0.003269
+         200(*)       266.034000       0.006651       0.003915       0.002305
+         400         1247.000000       0.007794       0.004281       0.002351
+         800         5100.000000       0.007969       0.004084       0.002093
+
+	Underestimated bound: 		n^2.00
+	Tight bound: 				n^2.10
+	Overestimated bound: 		n^2.20
+The division of the runtime by the tight bound tends to a constant contained
+ in the interval [0.003915-0.004281].
+
+
+As the specification given required a maximum queue size of 1600, we had to arrange the number of nodes to
+ fit the number of edges in the queue, so we started by reducing them to 1600 (from 25, following the 
+ geometrical progression indicated before). We then checked that for the values that were over 800 (with 
+ that queue size, only 1600), we had a strange behaviour in the runtimes, having a tendency to stabilize
+ in the tight bound in the cases before that number of nodes, which raised unexpectedly in the last case.
+ That is why we decided to make the measurements with a number of nodes between 25 and 800.
+
+In addition to those cases, we did not have more odd time values (neither negative nor smaller in the cases
+ the number of nodes was bigger than previous ones).
+ 
+
+Conclusion:
+In our study of complexity, Prim's algorithm had a slightly over quadratic performance, with an approximate
+ value for the tight bound of 2.10. This difference with the theoretical complexity might be given by the 
+ implementation of adding a vertex to the queue, as it acts as a set (they cannot be repeated). This means
+ that a traversal through it must be done in order to check if that edge can be added or not.
+
+In addition to that, we also annotated the strange behaviour of the division of the number of nodes by the
+ bounds, that was hidden with the decrease of the number of nodes of the graph. 
+
+

@@ -1,0 +1,117 @@
+ALGORITHMS - PRACTICAL 1: MAXIMUM SUBSEQUENCE SUM
+
+By:
+- Javier Fernández Rozas	j.frozas
+- Pelayo Vieites Pérez		pelayo.vieites.perez
+
+Date: 23 Sept 2021
+Group: 6.1
+
+
+Characteristics of the machine:
+	- CPU: Intel Core i7-1165G7 @ 2.80GHz
+	- RAM: 16GB
+	- O.S: Ubuntu 21.04
+	- Kernel: Linux 5.11.0-34-generic (x86_64)
+Compiler: gcc (Ubuntu 10.3.0-1ubuntu1) 10.3.0
+
+
+This practical is about the implementation, and the evaluation of the complexity of two algorithms 
+ to perform the maximum subsequence sum. This is, given a list of integers, find the maximum sum
+ of adjacent integers (for convenience, the sum of the maximum subsequence is 0 if all the integers
+ are negative).
+
+First, we are given several vectors, which are useful to check that the result of the algorithms
+ is correct. That corresponds to test 1 from the prac1alg.c file.
+
+Secondly, we used a function that generates random vectors, and used them to check if the
+ algorithms worked correctly and the same result was returned on both of them (this corresponds to test 2).
+
+Finally, we checked the algorithms with random vectors, which had a size of n, being n part of a 
+ geometrical progresion of the form 500*2^i, up to i=6 (n=32000). With this, we determined its execution
+ time and analyzed them.
+
+To measure the execution time of both algorithms, the program measures the system time (in microseconds)
+ before and after the execution of the algorithm. The execution time is defined as the difference of
+ both amounts. In this practical all the execution times are measured in microseconds
+
+If the execution time is of less than 500 microseconds, it is considered unprecised. To solve this issue,
+ in the event that happens, the program includes another procedure to measure the time in a proper and
+ precise way: repeat the algorithm 1000 times and compute the average time per iteration. This is:
+ ((final time) - (initial time))/1000. After so, the amount of time dedicated to the initialization of
+ the random arrays must be substracted from it as well, so a new measurement of execution time (the one
+ corresponding to initializing the arrays) is performed. In the cases that this is performed, it is
+ highlighted in the tables with (*).
+ 
+Thus, the definitive execution time for an algorithm is:
+    - The difference between initial and final time, if this is larger than 500 microseconds.
+    - If that difference is less than 500 microseconds:
+        * The difference between initial and final time of 1000 executions / 1000 (discounting
+        the time dedicated to the initialization of the random arrays)
+
+For obtaining the tight bounds, we first plotted in a graph the time points depending on the number of 
+ elements in the array for both MaxSubSum1 and MaxSubSum2, using for that purpose the software GNU Octave. 
+ In those graphs, we could appreciate that the function of the graph of MaxSubSum1 had an exponential growth, 
+ whereas the one corresponding to the times obtained when executing MaxSubSum2 was much more linear-like.
+
+We empirically checked that our assumption was similar to the models we imagined, using the execution times 
+ tables below.
+
+
+* *	* MaxSubSum1 Analysis * * *
+
+Table of the execution times of MaxSubSum1 depending on the number of elements of the array:
+
+Array length              t(n)     t(n)/n^1.8       t(n)/n^2     t(n)/n^2.2
+       500          887.000000       0.012296       0.003548       0.001024
+      1000         3532.000000       0.014061       0.003532       0.000887
+      2000        10946.000000       0.012514       0.002736       0.000598
+      4000        18486.000000       0.006069       0.001155       0.000220
+      8000        76969.000000       0.007257       0.001203       0.000199
+     16000       302299.000000       0.008185       0.001181       0.000170
+     32000      1205543.000000       0.009374       0.001177       0.000148
+
+
+Underestimated bound: 		n^1.8
+Tight bound: 				n^2
+Overestimated bound: 		n^2.2
+
+The division of the execution time over the underestimated bound tends to infinity as n (nº of elements of
+ the array) grows.
+The tight bound tends to a constant contained in the interval [0.0011-0.0012].
+The division of the execution time over the overestimated bound tends to 0 as n grows.
+
+
+* *	* MaxSubSum2 Analysis * * *
+
+Table of the execution times of MaxSubSum2 depending on the number of elements of the array:
+
+Array length              t(n)     t(n)/n^0.8         t(n)/n     t(n)/n^1.2
+       500(*)         1.788000       0.012393       0.003576       0.001032
+      1000(*)         3.312000       0.013185       0.003312       0.000832
+      2000(*)         6.159000       0.014083       0.003079       0.000673
+      4000(*)         8.151000       0.010704       0.002038       0.000388
+      8000(*)        19.300000       0.014557       0.002413       0.000400
+     16000(*)        33.570000       0.014543       0.002098       0.000303
+     32000(*)        66.114000       0.016450       0.002066       0.000259
+
+
+Underestimated bound: 		n^0.8
+Tight bound: 				n^1
+Overestimated bound: 		n^1.2
+
+The division of the execution time over the underestimated bound tends to infinity as n grows.
+The tight bound tends to a constant contained in the interval [0.0020-0.0024].
+The division of the execution time over the overestimated bound tends to 0 as n grows.
+
+
+In our case, we did not have strange time values (neither negative nor smaller in the cases the array was 
+ bigger than previous ones) after applying the correction for obtaining precise times, if they were inferior 
+ than 500 microseconds.
+ 
+
+Conclusion:
+The algorithm corresponding to MaxSubSum2 (which has a linear execution time) is faster and more efficient
+ than MaxSubSum1, as this has a exponential execution time.
+
+

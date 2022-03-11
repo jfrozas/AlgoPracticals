@@ -1,0 +1,166 @@
+ALGORITHMS - PRACTICAL 2: SORTING ALGORITHMS
+
+By:
+- Javier Fernández Rozas	j.frozas
+- Pelayo Vieites Pérez		pelayo.vieites.perez
+
+Date: 21 Oct 2021
+Group: 6.1
+
+
+Characteristics of the machine:
+	- CPU: Intel Core i7-1165G7 @ 2.80GHz
+	- RAM: 16GB
+	- O.S: Ubuntu 21.04
+	- Kernel: Linux 5.11.0-34-generic (x86_64)
+Compiler: gcc (Ubuntu 10.3.0-1ubuntu1) 10.3.0
+
+
+This practical is about the implementation, and the evaluation of the complexity and comparison of two
+ algorithms to perform the ordering of an array of integers: selection sort and shell sort. 
+
+After implementing both algorithms in C language, we check its correct functioning in two ways: calling
+ them to order a random-initialized array and a descending-ordered array.
+
+Finally, we checked the algorithms with random vectors, which had a size of n, being n part of a 
+ geometrical progresion of the form 500*2^i, up to i=6 (n=32000). With this, we determined its execution
+ times and analyzed them.
+
+To measure the execution time of both algorithms, the program measures the system time (in microseconds)
+ before and after the execution of the algorithm. The execution time is defined as the difference of
+ both amounts. In this practical all the execution times are measured in microseconds
+
+If the execution time is of less than 500 microseconds, it is considered unprecised. To solve this issue,
+ in the event that happens, the program includes another procedure to measure the time in a proper and
+ precise way: repeat the algorithm 1000 times and compute the average time per iteration. This is:
+ ((final time) - (initial time))/1000. After so, the amount of time dedicated to the initialization of
+ the random arrays must be substracted from it as well, so a new measurement of execution time (the one
+ corresponding to initializing the arrays) is performed. In the cases that this is performed, it is
+ highlighted in the tables with (*).
+ 
+Thus, the definitive execution time for an algorithm is:
+    - The difference between initial and final time, if this is larger than 500 microseconds.
+    - If that difference is less than 500 microseconds:
+        * The difference between initial and final time of 1000 executions / 1000 (discounting
+        the time dedicated to the initialization of the random arrays)
+
+* * * * Analysis of the execution times
+
+For the Selection sort algorithm, we obtained the tables shown below, and approximated the bounds as:
+	Underestimated bound: 		n^1.8
+	Tight bound: 				n^2
+	Overestimated bound: 		n^2.2
+
+Random initialization. Selection sort
+Array length              t(n)     t(n)/n^1.8       t(n)/n^2     t(n)/n^2.2
+       500(*)       253.882000       0.003520       0.001016       0.000293
+      1000         1005.000000       0.004001       0.001005       0.000252
+      2000         3962.000000       0.004530       0.000991       0.000217
+      4000        15183.000000       0.004985       0.000949       0.000181
+      8000        59829.000000       0.005641       0.000935       0.000155
+     16000       240785.000000       0.006519       0.000941       0.000136
+     32000       960780.000000       0.007471       0.000938       0.000118
+
+The division of the execution time over the underestimated bound tends to infinity as n (nº of elements of
+ the array) grows.
+The tight bound tends to a constant contained in the interval [0.00093-0.00095].
+The division of the execution time over the overestimated bound tends to 0 as n grows.
+
+
+Ascending initialization. Selection sort
+Array length              t(n)     t(n)/n^1.8       t(n)/n^2     t(n)/n^2.2
+       500(*)       234.767000       0.003255       0.000939       0.000271
+      1000          936.000000       0.003726       0.000936       0.000235
+      2000         3798.000000       0.004342       0.000950       0.000208
+      4000        14847.000000       0.004875       0.000928       0.000177
+      8000        60060.000000       0.005663       0.000938       0.000156
+     16000       235614.000000       0.006379       0.000920       0.000133
+     32000       945160.000000       0.007349       0.000923       0.000116
+
+The division of the execution time over the underestimated bound tends to infinity as n (nº of elements of
+ the array) grows.
+The tight bound tends to a constant contained in the interval [0.00092-0.00095].
+The division of the execution time over the overestimated bound tends to 0 as n grows.
+
+
+Descending initialization. Selection sort
+Array length              t(n)     t(n)/n^1.8       t(n)/n^2     t(n)/n^2.2
+       500(*)       262.194000       0.003635       0.001049       0.000303
+      1000         1047.000000       0.004168       0.001047       0.000263
+      2000         4160.000000       0.004756       0.001040       0.000227
+      4000        16530.000000       0.005427       0.001033       0.000197
+      8000        65939.000000       0.006217       0.001030       0.000171
+     16000       266354.000000       0.007212       0.001040       0.000150
+     32000      1059300.000000       0.008237       0.001034       0.000130
+
+The division of the execution time over the underestimated bound tends to infinity as n (nº of elements of
+ the array) grows.
+The tight bound tends to a constant contained in the interval [0.00103-0.00105].
+The division of the execution time over the overestimated bound tends to 0 as n grows.
+
+Looking at these results, we can empirically formulate the idea that the descending initialization is 
+ the worst case for this algorithm.
+
+
+For the Shell sort algorithm, we obtained the tables shown below, and approximated the bounds as:
+	Underestimated bound: 		n^0.95
+	Tight bound: 				n^1.15
+	Overestimated bound: 		n^1.35
+
+Random initialization. Shell sort
+Array length              t(n)    t(n)/n^0.95    t(n)/n^1.15    t(n)/n^1.35
+       500(*)        43.507000       0.118724       0.034257       0.009884
+      1000(*)       102.137000       0.144272       0.036240       0.009103
+      2000(*)       233.328000       0.170604       0.037306       0.008158
+      4000          540.000000       0.204379       0.038907       0.007406
+      8000         1225.000000       0.239994       0.039772       0.006591
+     16000         2780.000000       0.281923       0.040673       0.005868
+     32000         6413.000000       0.336642       0.040280       0.005310
+
+The division of the execution time over the underestimated bound tends to infinity as n (nº of elements of
+ the array) grows.
+The tight bound tends to a constant contained in the interval [0.036-0.041].
+The division of the execution time over the overestimated bound tends to 0 as n grows.
+In the case of the tight bound, it varies slightly, but tends to stabilise.
+
+
+Ascending initialization. Shell sort
+Array length              t(n)    t(n)/n^0.95    t(n)/n^1.15    t(n)/n^1.35
+       500(*)        10.844000       0.029592       0.008538       0.002464
+      1000(*)        24.269000       0.034281       0.008611       0.002163
+      2000(*)        54.387000       0.039766       0.008696       0.001902
+      4000(*)       122.303000       0.046289       0.008812       0.001677
+      8000(*)       266.460000       0.052203       0.008651       0.001434
+     16000          557.000000       0.056486       0.008149       0.001176
+     32000         1219.000000       0.063990       0.008037       0.001009
+
+The division of the execution time over the underestimated bound tends to infinity as n (nº of elements of
+ the array) grows.
+The tight bound tends to a constant contained in the interval [0.0080-0.0086].
+The division of the execution time over the overestimated bound tends to 0 as n grows.
+
+Descending initialization. Shell sort
+Array length              t(n)    t(n)/n^0.95    t(n)/n^1.15    t(n)/n^1.35
+       500(*)        16.435000       0.044849       0.012941       0.003734
+      1000(*)        37.585000       0.053090       0.013336       0.003350
+      2000(*)        83.699000       0.061199       0.013382       0.002926
+      4000(*)       185.009000       0.070022       0.013330       0.002538
+      8000(*)       401.285000       0.078617       0.013029       0.002159
+     16000         1302.000000       0.132037       0.019049       0.002748
+     32000         2316.000000       0.121576       0.015269       0.001918
+
+The division of the execution time over the underestimated bound tends to infinity as n grows.
+The tight bound tends to a constant contained in the interval [0.013-0.019].
+The division of the execution time over the overestimated bound tends to 0 as n grows.
+
+
+In our case, we did not have strange time values (neither negative nor smaller in the cases the array was 
+ bigger than previous ones) after applying the correction for obtaining precise times, if they were inferior 
+ than 500 microseconds. Although, the division of the execution times by the bounds varied in some cases.
+ 
+
+Conclusion:
+By analyzing the execution times of both algorithms, we can conclude that Shell Sort is faster in all the cases,
+ and also that the descedant-sorted array is not the worst case for this algorithm.
+
+

@@ -1,0 +1,290 @@
+ALGORITHMS - PRACTICAL 3: INSERTION AND QUICK SORT
+
+By:
+- Javier Fernández Rozas	j.frozas
+- Pelayo Vieites Pérez		pelayo.vieites.perez
+
+Date: 18 Nov 2021
+Group: 6.1
+
+
+Characteristics of the machine:
+	- CPU: Intel Core i7-1165G7 @ 2.80GHz
+	- RAM: 16GB
+	- O.S: Ubuntu 21.04
+	- Kernel: Linux 5.11.0-34-generic (x86_64)
+Compiler: gcc (Ubuntu 10.3.0-1ubuntu1) 10.3.0
+
+
+This practical is about the implementation, and the evaluation of the complexity and comparison of two
+ algorithms to perform the ordering of an array of integers: insertion sort and quick sort. 
+
+After implementing both algorithms in C language, we check its correct functioning in two ways: calling
+ them to order a random-initialized array and a descending-ordered array.
+
+Finally, we checked the algorithms with random vectors, which had a size of n, being n part of a 
+ geometrical progresion of the form 500*2^i, up to i=6 (n=32000). With this, we determined its execution
+ times and analyzed them.
+
+To measure the execution time of both algorithms, the program measures the system time (in microseconds)
+ before and after the execution of the algorithm. The execution time is defined as the difference of
+ both amounts. In this practical all the execution times are measured in microseconds
+
+If the execution time is of less than 500 microseconds, it is considered unprecised. To solve this issue,
+ in the event that happens, the program includes another procedure to measure the time in a proper and
+ precise way: repeat the algorithm 1000 times and compute the average time per iteration. This is:
+ ((final time) - (initial time))/1000. After so, the amount of time dedicated to the initialization of
+ the random arrays must be substracted from it as well, so a new measurement of execution time (the one
+ corresponding to initializing the arrays) is performed. In the cases that this is performed, it is
+ highlighted in the tables with (*).
+ 
+Thus, the definitive execution time for an algorithm is:
+    - The difference between initial and final time, if this is larger than 500 microseconds.
+    - If that difference is less than 500 microseconds:
+        * The difference between initial and final time of 1000 executions / 1000 (discounting
+        the time dedicated to the initialization of the random arrays)
+
+* * * * Analysis of the execution times
+
+For the Insertion sort algorithm, we obtained the tables shown below.
+
+Ascending initialization. Insertion sort
+Array length              t(n)    t(n)/n^0.80    t(n)/n^0.90    t(n)/n^1.00
+       500(*)         1.057000       0.007327       0.003936       0.002114
+      1000(*)         2.606000       0.010375       0.005200       0.002606
+      2000(*)         7.060000       0.016143       0.007549       0.003530
+      4000(*)        13.412000       0.017613       0.007685       0.003353
+      8000(*)        26.693000       0.020134       0.008196       0.003337
+     16000(*)        49.775000       0.021563       0.008190       0.003111
+     32000(*)        85.292000       0.021222       0.007521       0.002665
+
+	Underestimated bound: 		n^0.80
+	Tight bound: 				n^0.90
+	Overestimated bound: 		n^1.00
+The division of the runtime by the tight bound tends to a constant contained
+ in the interval [0.007521-0.008196].
+
+
+Descending initialization. Insertion sort
+Array length              t(n)    t(n)/n^1.87    t(n)/n^2.07    t(n)/n^2.27
+       500(*)       326.699000       0.002931       0.000846       0.000244
+      1000         1212.000000       0.002975       0.000747       0.000188
+      2000         5058.000000       0.003397       0.000743       0.000162
+      4000        19682.000000       0.003616       0.000688       0.000131
+      8000        86772.000000       0.004361       0.000723       0.000120
+     16000       335478.000000       0.004613       0.000665       0.000096
+     32000      1358434.000000       0.005110       0.000642       0.000081
+
+	Underestimated bound: 		n^1.87
+	Tight bound: 				n^2.07
+	Overestimated bound: 		n^2.27
+The division of the runtime by the tight bound tends to a constant contained
+ in the interval [0.000642-0.000723].
+
+
+Random initialization. Insertion sort
+Array length              t(n)    t(n)/n^1.80    t(n)/n^2.00    t(n)/n^2.20
+       500(*)       138.100000       0.001914       0.000552       0.000159
+      1000          540.000000       0.002150       0.000540       0.000136
+      2000         1995.000000       0.002281       0.000499       0.000109
+      4000         8079.000000       0.002652       0.000505       0.000096
+      8000        35938.000000       0.003388       0.000562       0.000093
+     16000       137266.000000       0.003717       0.000536       0.000077
+     32000       546931.000000       0.004253       0.000534       0.000067
+
+	Underestimated bound: 		n^1.80
+	Tight bound: 				n^2.00
+	Overestimated bound: 		n^2.20
+The division of the runtime by the tight bound tends to a constant contained
+ in the interval [0.000534-0.000562]. 
+
+
+For the Quick Sort algorithm, we computed the runtimes for threee different 
+ thresholds: 1, 10 and 100. This is the number of elements that stops the 
+ partitioning of the array. In the case when the threshold is 1, insertion
+ sort is never called.
+
+We start with threshold = 1.
+
+Ascending initialization. Quick sort. Threshold = 1
+Array length              t(n)    t(n)/n^0.90    t(n)/n^1.10    t(n)/n^1.30
+       500(*)        14.501000       0.053991       0.015579       0.004495
+      1000(*)        31.538000       0.062927       0.015806       0.003970
+      2000(*)        68.224000       0.072947       0.015952       0.003488
+      4000(*)       151.435000       0.086771       0.016518       0.003144
+      8000(*)       328.849000       0.100975       0.016734       0.002773
+     16000          560.000000       0.092147       0.013294       0.001918
+     32000         1381.000000       0.121775       0.015294       0.001921
+
+	Underestimated bound: 		n^0.90
+	Tight bound: 				n^1.10
+	Overestimated bound: 		n^1.30
+The division of the runtime by the tight bound tends to a constant contained
+ in the interval [0.013294-0.016734].
+
+
+Descending initialization. Quick sort. Threshold = 1
+Array length              t(n)    t(n)/n^1.80    t(n)/n^2.00    t(n)/n^2.20
+       500(*)        90.786000       0.001259       0.000363       0.000105
+      1000(*)       308.342000       0.001228       0.000308       0.000077
+      2000         1105.000000       0.001263       0.000276       0.000060
+      4000         4308.000000       0.001414       0.000269       0.000051
+      8000        17012.000000       0.001604       0.000266       0.000044
+     16000        74881.000000       0.002027       0.000293       0.000042
+     32000       274625.000000       0.002135       0.000268       0.000034
+
+	Underestimated bound: 		n^1.80
+	Tight bound: 				n^2.00
+	Overestimated bound: 		n^2.20
+The division of the runtime by the tight bound tends to a constant contained
+ in the interval [0.000268-0.000293].
+
+
+Random initialization. Quick sort. Threshold = 1
+Array length              t(n)    t(n)/n^1.00    t(n)/n^1.17    t(n)/n^1.34
+       500(*)        38.249000       0.076498       0.026597       0.009247
+      1000(*)        79.900000       0.079900       0.024691       0.007630
+      2000(*)       174.527000       0.087263       0.023969       0.006584
+      4000(*)       371.612000       0.092903       0.022682       0.005538
+      8000          764.000000       0.095500       0.020724       0.004497
+     16000         1590.000000       0.099375       0.019168       0.003697
+     32000         3555.000000       0.111094       0.019046       0.003265
+
+	Underestimated bound: 		n^1.00
+	Tight bound: 				n^1.17
+	Overestimated bound: 		n^1.34
+The division of the runtime by the tight bound tends to a constant contained
+ in the interval [0.019046-0.020724].
+      
+
+
+Having analized all the cases with threshold=1, we change its value to 10.
+
+Ascending initialization. Quick sort. Threshold = 10
+Array length              t(n)    t(n)/n^0.90    t(n)/n^1.10    t(n)/n^1.30
+       500(*)         8.638000       0.032162       0.009280       0.002678
+      1000(*)        20.269000       0.040442       0.010159       0.002552
+      2000(*)        41.011000       0.043850       0.009589       0.002097
+      4000(*)        89.595000       0.051337       0.009773       0.001860
+      8000(*)       195.620000       0.060067       0.009954       0.001650
+     16000(*)       419.084000       0.068959       0.009949       0.001435
+     32000          837.000000       0.073806       0.009270       0.001164
+
+	Underestimated bound: 		n^0.90
+	Tight bound: 				n^1.10
+	Overestimated bound: 		n^1.30
+The division of the runtime by the tight bound tends to a constant contained
+ in the interval [0.009270-0.009954].
+
+Descending initialization. Quick sort. Threshold = 10
+Array length              t(n)    t(n)/n^1.80    t(n)/n^2.00    t(n)/n^2.20
+       500(*)        68.646000       0.000952       0.000275       0.000079
+      1000(*)       245.590000       0.000978       0.000246       0.000062
+      2000          883.000000       0.001010       0.000221       0.000048
+      4000         3447.000000       0.001132       0.000215       0.000041
+      8000        13493.000000       0.001272       0.000211       0.000035
+     16000        53687.000000       0.001454       0.000210       0.000030
+     32000       215855.000000       0.001678       0.000211       0.000026
+
+	Underestimated bound: 		n^1.80
+	Tight bound: 				n^2.00
+	Overestimated bound: 		n^2.20
+The division of the runtime by the tight bound tends to a constant contained
+ in the interval [0.000210-0.000211].
+
+Random initialization. Quick sort. Threshold = 10
+Array length              t(n)    t(n)/n^1.00    t(n)/n^1.10    t(n)/n^1.20
+       500(*)        33.122000       0.066244       0.035584       0.019114
+      1000(*)        64.026000       0.064026       0.032089       0.016083
+      2000(*)       141.498000       0.070749       0.033084       0.015471
+      4000(*)       314.128000       0.078532       0.034264       0.014950
+      8000          629.000000       0.078625       0.032007       0.013030
+     16000         1392.000000       0.087000       0.033045       0.012551
+     32000         2963.000000       0.092594       0.032815       0.011629
+
+	Underestimated bound: 		n^1.00
+	Tight bound: 				n^1.10
+	Overestimated bound: 		n^1.20
+The division of the runtime by the tight bound tends to a constant contained
+ in the interval [0.032007-0.033045].
+
+
+Now, the threshold increases to 100.
+Ascending initialization. Quick sort. Threshold = 100
+Array length              t(n)    t(n)/n^0.90    t(n)/n^1.10    t(n)/n^1.30
+       500(*)         4.931000       0.018360       0.005297       0.001529
+      1000(*)        11.248000       0.022443       0.005637       0.001416
+      2000(*)        26.128000       0.027937       0.006109       0.001336
+      4000(*)        57.415000       0.032898       0.006263       0.001192
+      8000(*)       130.815000       0.040168       0.006657       0.001103
+     16000(*)       279.866000       0.046051       0.006644       0.000959
+     32000          616.000000       0.054318       0.006822       0.000857
+
+	Underestimated bound: 		n^0.90
+	Tight bound: 				n^1.10
+	Overestimated bound: 		n^1.30
+The division of the runtime by the tight bound tends to a constant contained
+ in the interval [0.006644-0.006657].
+
+Descending initialization. Quick sort. Threshold = 100
+Array length              t(n)    t(n)/n^1.80    t(n)/n^2.00    t(n)/n^2.20
+       500(*)        81.757000       0.001133       0.000327       0.000094
+      1000(*)       301.240000       0.001199       0.000301       0.000076
+      2000         1073.000000       0.001227       0.000268       0.000059
+      4000         4495.000000       0.001476       0.000281       0.000053
+      8000        18288.000000       0.001724       0.000286       0.000047
+     16000        78139.000000       0.002116       0.000305       0.000044
+     32000       302967.000000       0.002356       0.000296       0.000037
+
+	Underestimated bound: 		n^1.80
+	Tight bound: 				n^2.00
+	Overestimated bound: 		n^2.20
+The division of the runtime by the tight bound tends to a constant contained
+ in the interval [0.000281-0.000305].
+
+
+Random initialization. Quick sort. Threshold = 100
+Array length              t(n)    t(n)/n^1.00    t(n)/n^1.15    t(n)/n^1.30
+       500(*)        37.805000       0.075610       0.029767       0.011719
+      1000(*)        78.914000       0.078914       0.028000       0.009935
+      2000(*)       167.677000       0.083838       0.026810       0.008573
+      4000(*)       372.101000       0.093025       0.026810       0.007727
+      8000          730.000000       0.091250       0.023701       0.006156
+     16000         1617.000000       0.101062       0.023658       0.005538
+     32000         3397.000000       0.106156       0.022396       0.004725
+
+	Underestimated bound: 		n^1.00
+	Tight bound: 				n^1.15
+	Overestimated bound: 		n^1.30
+The division of the runtime by the tight bound tends to a constant contained
+ in the interval [0.022396-0.023701].
+
+We will now compare the results obtained for each of the different thresholds and for 
+ the initial situation of the array:
+
+In the case of the ascending initialization, the one that produces the best results is
+ the one with the highest threshold. This is the consequence of the underlying sorting 
+ algorithm: insertion sort. As it is sorted, it has a linear execution time, and the
+ number of steps in the recursion decreases if the threshold increases.
+
+For the descending initialization, the threshold with the best performance is 10. 
+ Even that it is the worst case for the insertion sort algorithm, it is better than 
+ sorting the array in a purely-recursive way.
+ 
+Finally, in the case of the random-initialized arrays, the best-performing threshold
+ was again 10.
+ 
+
+In our case, we did not have strange time values (neither negative nor smaller in the cases the array was 
+ bigger than previous ones) after applying the correction for obtaining precise times, if they were inferior 
+ than 500 microseconds. Although, the division of the execution times by the bounds varied in some cases.
+ 
+
+Conclusion:
+By analyzing the execution times of both algorithms, we can conclude that:
+  - Insertion sort is the best for ascending-ordered arrays.
+  - For the rest of the cases, quick sort with threshold 10 is the best option.
+  - As we have seen, there is difference in the algorithm's complexity, depending
+    on the situation of the initial arrays.
+  
+  
